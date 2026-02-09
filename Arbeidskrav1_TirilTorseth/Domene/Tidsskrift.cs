@@ -1,6 +1,41 @@
 namespace Arbeidskrav1_TirilTorseth.Domene;
 
-public class Tidsskrift
+public class Tidsskrift : Media
 {
+    private int utgaveNummer;
+    private string måned;
+
+    public int UtgaveNummer
+    {
+        get => utgaveNummer;
+        protected set
+        {
+            if (value <= 0)
+                throw new ArgumentException("Utgavenummeret må være større enn 0.");
+            utgaveNummer = value;
+        }
+    }
+
+    public string Måned
+    {
+        get => måned;
+        protected set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Måned kan ikke stå tom.");
+            måned = value;
+        }
+    }
+
+    public Tidsskrift(string Tittel, int PubliseringsÅr, int UtgaveNummer, string Måned)
+        : base(Tittel, PubliseringsÅr, 3)
+    {
+        this.UtgaveNummer = UtgaveNummer;
+        this.Måned = Måned;
+    }
     
+    public override void VisInfo()
+    {
+        Console.WriteLine($"Tidsskrift: {Tittel} med utgavenummer {UtgaveNummer}");
+    }
 }
