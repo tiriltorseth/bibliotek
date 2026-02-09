@@ -18,7 +18,6 @@ public abstract class Media
     private bool erUtlånt;
     private int lånePeriodeDager;
     
-    // public MediaID => mediaID;
 
     public string Tittel
     {
@@ -27,7 +26,6 @@ public abstract class Media
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Navn kan ikke stå tomt.");
-            
             tittel = value;
         }
     }
