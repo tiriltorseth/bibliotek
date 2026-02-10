@@ -35,8 +35,6 @@ public class Bok : Media
     {
         this.Forfatter = Forfatter;
         this.AntallSider = AntallSider;
-
-        
     }
 
     public override void VisInfo()

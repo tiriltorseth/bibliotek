@@ -44,7 +44,7 @@ public abstract class Bruker
     protected Bruker(string navn, string epost)
     {
         brukerTeller++;
-        BrukerID = brukerTeller.ToString("D3");
+        BrukerID = "B" + brukerTeller.ToString("D3");
         Navn = navn;
         Epost = epost;
         UtlånteMedier = new List<Media>();

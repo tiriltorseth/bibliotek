@@ -47,7 +47,7 @@ public abstract class Media
     public bool ErUtlånt
     {
         get => erUtlånt;
-        protected set => erUtlånt = value;
+        set => erUtlånt = value;
     }
 
     public int LånePeriodeDager
