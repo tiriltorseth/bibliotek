@@ -35,8 +35,6 @@ public class Utlån
         get => forventetInnleveringsDato;
         protected set
         {
-            if (value > DateTime.Now)
-                throw new ArgumentException("Utlånsdato kan ikke være i fremtiden.");
             forventetInnleveringsDato = value;
         }
     }
@@ -62,6 +60,8 @@ public class Utlån
     {
         utlånTeller++;
         UtlånsID = "U" + utlånTeller.ToString("D3");
+        forventetInnleveringsDato = DateTime.Now.AddDays(media.LånePeriodeDager);
+
         this.media = media;
         this.bruker = bruker;
         UtlånsDato = utlånsDato;
