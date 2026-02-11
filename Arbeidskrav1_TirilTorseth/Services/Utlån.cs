@@ -9,7 +9,9 @@ public class Utlån
 {
     private static int utlånTeller = 0;
     
-    public string UtlånsID { get; }
+    private readonly string utlånsID; 
+    public string UtlånsID { get=> utlånsID; }
+    
     public Media media { get; }
     public Bruker bruker { get; }
     
@@ -59,7 +61,7 @@ public class Utlån
     public Utlån(Media media, Bruker bruker, DateTime utlånsDato)
     {
         utlånTeller++;
-        UtlånsID = "U" + utlånTeller.ToString("D3");
+        utlånsID = "U" + utlånTeller.ToString("D3");
         forventetInnleveringsDato = DateTime.Now.AddDays(media.LånePeriodeDager);
 
         this.media = media;

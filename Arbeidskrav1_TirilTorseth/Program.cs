@@ -2,6 +2,7 @@
 using Arbeidskrav1_TirilTorseth.Domene;
 using Arbeidskrav1_TirilTorseth.Services;
 
+
 namespace Arbeidskrav1_TirilTorseth;
 
 class Program
@@ -13,7 +14,7 @@ class Program
 
         //Medlemmer
         bibliotek.BrukerRegister.Add(new Medlem("Anna Berg", "anna@gmail.com"));
-        bibliotek.BrukerRegister.Add(new Medlem("Jonas Lie", " jonas@gmail.com"));
+        bibliotek.BrukerRegister.Add(new Medlem("Jonas Lie", "jonas@gmail.com"));
         bibliotek.BrukerRegister.Add(new Medlem("Sara Hansen", "saara@gmail.com"));
 
         //Ansatte
@@ -41,84 +42,133 @@ class Program
         bibliotek.MediaRegister.Add(new Tidsskrift("National Geographic", 145, "Februar", 2025));
         bibliotek.MediaRegister.Add(new Tidsskrift("Teknisk Ukeblad", 88, "Mars", 2025));
 
-
-        //Meny oppsett
-
-        Console.WriteLine("Tilgjengelige operasjoner:");
-        Console.WriteLine(" 1. Vis medier");
-        Console.WriteLine(" 2. Lån medie");
-        Console.WriteLine(" 3. Lever inn medie");
-        Console.WriteLine(" 4. Vis mine utlån");
-        Console.WriteLine(" 5. Legg til nytt medie (kun ansatte)");
-        Console.WriteLine(" 6. Registrer ny bruker");
-        Console.WriteLine(" 0. Avslutt");
-
-        Console.Write("Velg alternativ (0-6): ");
-
-        int HentGyldigValg(int min, int max)
-        {
-            while (true)
-            {
-                if (int.TryParse(Console.ReadLine(), out int valg)
-                    && valg >= min && valg <= max)
-                {
-                    return valg;
-                }
-
-                Console.Write("Ugyldig valg. Prøv igjen: \n");
-            }
-        }
-
-        int velgMeny = HentGyldigValg(0, 6);
-
-
+        
         //KJØRING
-        switch (velgMeny)
+        while (true)
         {
-            //VALG 1 - VIS ALLE MEDIER
-            case 1:
-                Console.WriteLine("\n=== Tilgjengelige medier ===\n");
-                foreach (var bok in bibliotek.MediaRegister.OfType<Bok>())
-                {
-                    Console.WriteLine(
-                        $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}), {bok.AntallSider} sider");
-                }
+            //Meny oppsett                                                           
+            Console.WriteLine("\nTilgjengelige operasjoner:");                         
+            Console.WriteLine(" 1. Vis medier");                                     
+            Console.WriteLine(" 2. Lån medie");                                      
+            Console.WriteLine(" 3. Lever inn medie");                                
+            Console.WriteLine(" 4. Vis mine utlån");                                 
+            Console.WriteLine(" 5. Legg til nytt medie (kun ansatte)");              
+            Console.WriteLine(" 6. Registrer ny bruker");                            
+            Console.WriteLine(" 0. Avslutt");                                        
+                                                                         
+            Console.Write("Velg alternativ (0-6): ");                                
+                                                                         
+            int HentGyldigValg(int min, int max)                                     
+            {                                                                        
+                while (true)                                                         
+                {                                                                    
+                    if (int.TryParse(Console.ReadLine(), out int valg)               
+                        && valg >= min && valg <= max)                               
+                    {                                                                
+                        return valg;                                                 
+                    }                                                                
+                                                                         
+                    Console.Write("Ugyldig valg. Prøv igjen: \n");                   
+                }                                                                    
+            }                                                                        
+                                                                         
+            int velgMeny = HentGyldigValg(0, 6);                                     
+            
+            //Velg meny
+            switch (velgMeny)
+            {
+                    //VALG 1 - VIS ALLE MEDIER
+                    case 1:
+                    Console.WriteLine("\n=== Tilgjengelige medier ===\n");
+                    foreach (var bok in bibliotek.MediaRegister.OfType<Bok>())
+                    {
+                        Console.WriteLine(
+                            $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}), {bok.AntallSider} sider");
+                    }
 
-                foreach (var bok in bibliotek.MediaRegister.OfType<Lydbok>())
-                {
-                    Console.WriteLine(
-                        $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}) - {bok.Varighet}");
-                }
+                    foreach (var bok in bibliotek.MediaRegister.OfType<Lydbok>())
+                    {
+                        Console.WriteLine(
+                            $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}) - {bok.Varighet}");
+                    }
 
-                foreach (var bok in bibliotek.MediaRegister.OfType<Ebok>())
-                {
-                    Console.WriteLine(
-                        $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}), {bok.FilStørrelse} MB");
-                }
+                    foreach (var bok in bibliotek.MediaRegister.OfType<Ebok>())
+                    {
+                        Console.WriteLine(
+                            $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}), {bok.FilStørrelse} MB");
+                    }
 
-                foreach (var bok in bibliotek.MediaRegister.OfType<Tidsskrift>())
-                {
-                    Console.WriteLine(
-                        $"[{bok.MediaID}] - '{bok.Tittel}' - Utgave nr. {bok.UtgaveNummer}, {bok.Måned}  {bok.PubliseringsÅr}");
+                    foreach (var bok in bibliotek.MediaRegister.OfType<Tidsskrift>())
+                    {
+                        Console.WriteLine(
+                            $"[{bok.MediaID}] - '{bok.Tittel}' - Utgave nr. {bok.UtgaveNummer}, {bok.Måned}  {bok.PubliseringsÅr}");
 
-                }
+                    }
 
-                break;
+                    break;
 
-            // VALG 2 - LÅN MEDIE
-            case 2:
-                Console.Write("Skriv inn BrukerID: ");
-                string brukerID = Console.ReadLine();
+                    // VALG 2 - LÅN MEDIE
+                    case 2:
+                    Console.Write("Skriv inn BrukerID (B###): ");
+                    string brukerID = Console.ReadLine();
 
-                Console.Write("Skriv inn MediaID: ");
-                string mediaID = Console.ReadLine();
+                    Console.Write("Skriv inn MediaID (M###): ");
+                    string mediaID = Console.ReadLine();
 
-                bibliotek.LånMedia(mediaID, brukerID);
+                    bibliotek.LånMedia(mediaID, brukerID);
 
-                break;
+                    break;
+                    
+           //FIKS         //VALG 3 - LEVER INN MEDIE
+                    case 3:
+                        Console.Write("Skriv inn BrukerID (B###): ");  
+                        string LeverMedieBruker = Console.ReadLine();          
+                                               
+                        Console.Write("Skriv inn MediaID (M###): ");   
+                        string LeverMedieMedia = Console.ReadLine();           
+                                               
+                        bibliotek.LeverInnMedia(LeverMedieMedia, LeverMedieBruker);         
+                        
+                        break;
+                    
+                    // VALG 4 - VIS MINE LÅN
+                    case 4:
+                        Console.Write("\nSkriv inn BrukerID (B###): ");
+                        string VisMineLån = Console.ReadLine();
+                        
+                        Console.WriteLine("\n=== Dine lån ===\n"); 
+                        
+                        bibliotek.VisMineUtlån(VisMineLån);
+                        
+                        break;
+                    
+                    
+                    //Legg til nytt medie
+                    case 5:
+
+                        break;
+                    
+                    // Registrer ny bruker
+                    case 6:
+                        Console.Write("Skriv inn Medlem eller Ansatt med små bokstaver: ");
+                        
+                        Console.Write("Skriv inn Navn: ");
+                        string RegistrerNavn = Console.ReadLine();
+                        
+                        Console.Write("Skriv inn Epost: ");
 
 
-
+                        break;
+                    
+                    
+                    // VALG 0 - AVSLUTT PROGRAM
+                    case 0:
+                        Console.WriteLine("Program avsluttet. Hadet!");  
+                        return;
+                    
+                    
+                    
+            }
         }
     }
 }

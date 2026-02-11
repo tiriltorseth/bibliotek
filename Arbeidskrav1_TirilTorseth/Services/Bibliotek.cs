@@ -23,90 +23,94 @@ public class Bibliotek
         BrukerRegister.Add(bruker); // hva skjer hvis den allerede eksisterer???
     }
 
-    public void LånMedia(string MediaID, string BrukerID)
+    public void LånMedia(string mediaID, string brukerID)
     {
-        foreach (var bruker in BrukerRegister)
+        var bruker = BrukerRegister
+            .FirstOrDefault(b => b.BrukerID == brukerID);
+
+        if (bruker == null)
         {
-            if (bruker.BrukerID == BrukerID)
-            {
-                if (bruker.KanLåne())
-                {
-                    foreach (var media in MediaRegister)
-                    {
-                        if (media.MediaID == MediaID)
-                        {
-                            if (!media.ErUtlånt)
-                            {
-                                media.ErUtlånt = true;
-                                bruker.UtlånteMedier.Add(media);
-                                UtlånsHistorikk.Add(new Utlån(media, bruker, DateTime.Now));
-                            }
-                            else
-                            {
-                                Console.WriteLine("Mediet er allerede utlånt!");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Mediet eksisterer ikke, få ansatt til å legge til mediet først.");
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Bruker kan ikke låne flere medier, maks utlånte medier er nådd.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Feil: Bruker eksisterer ikke, registerer bruker først.");
-            }
+            Console.WriteLine("Bruker eksisterer ikke.");
+            return;
         }
+
+        if (!bruker.KanLåne())
+        {
+            Console.WriteLine("Bruker kan ikke låne flere medier.");
+            return;
+        }
+
+        var media = MediaRegister
+            .FirstOrDefault(m => m.MediaID == mediaID);
+
+        if (media == null)
+        {
+            Console.WriteLine("Mediet eksisterer ikke.");
+            return;
+        }
+
+        if (media.ErUtlånt)
+        {
+            Console.WriteLine("Mediet er allerede utlånt.");
+            return;
+        }
+
+        media.ErUtlånt = true;
+        bruker.UtlånteMedier.Add(media);
+        
+        var utlån = new Utlån(media,bruker,DateTime.Now);
+        UtlånsHistorikk.Add(utlån);
+
+        Console.WriteLine("Lånet er registrert!.");
     }
+    
+    
 
     public void LeverInnMedia(string MediaID, string BrukerID)
     {
-        foreach (var bruker in BrukerRegister)
+        var bruker = BrukerRegister
+            .FirstOrDefault(b => b.BrukerID == BrukerID);
+
+        if (bruker == null)
         {
-            if (bruker.BrukerID == BrukerID)
-            {
-                foreach (var media in MediaRegister)
-                {
-                    if (media.MediaID == MediaID)
-                    {
-                        if (media.ErUtlånt)
-                        {
-                            media.ErUtlånt = false; // leverer inn
-                            bruker.UtlånteMedier.Remove(media);
-                            foreach (var utlån in UtlånsHistorikk)
-                            {
-                                if (utlån.media.MediaID == MediaID)
-                                {
-                                    utlån.InnlevertDato = DateTime.Now;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Du har ikke lånt dette mediet. Kan ikke levere inn noe du ikke har lånt.");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Mediet er allerede utlånt!");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Mediet eksisterer ikke, få ansatt til å legge til mediet først.");
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("Feil: Bruker eksisterer ikke, registerer bruker først.");
-            }
+            Console.WriteLine("Bruker eksisterer ikke.");
+            return;
         }
-        
+
+        var media = MediaRegister
+            .FirstOrDefault(m => m.MediaID == MediaID);
+
+        if (media == null)
+        {
+            Console.WriteLine("Mediet eksisterer ikke.");
+            return;
+        }
+
+        if (!media.ErUtlånt)
+        {
+            Console.WriteLine("Mediet er ikke utlånt.");
+            return;
+        }
+
+        var utlån = UtlånsHistorikk
+            .FirstOrDefault(u =>
+                u.media.MediaID == MediaID &&
+                u.bruker.BrukerID == BrukerID &&
+                u.InnlevertDato == null);
+
+        if (utlån == null)
+        {
+            Console.WriteLine("Fant ikke aktivt lån.");
+            return;
+        }
+
+        media.ErUtlånt = false;
+        bruker.UtlånteMedier.Remove(media);
+        utlån.InnlevertDato = DateTime.Now;
+
+        Console.WriteLine("Innlevering registrert.");
+        Console.WriteLine($"{media.MediaID} - {media.Tittel}");
+
     }
 
     public void VisTilgjengeligeMedier()
@@ -114,18 +118,28 @@ public class Bibliotek
         Console.WriteLine(MediaRegister);
     }
 
-    public void VisMineUtlån(string BrukerID)
+    public void VisMineUtlån(string brukerID)
     {
-        foreach (var bruker in BrukerRegister)
+        var bruker = BrukerRegister
+            .FirstOrDefault(b => b.BrukerID == brukerID);
+
+        if (bruker == null)
         {
-            if (bruker.BrukerID == BrukerID)
-            {
-                Console.WriteLine("Dine utlån: " + bruker.UtlånteMedier);
-            }
-            else
-            {
-                Console.WriteLine("Feil: Bruker eksisterer ikke, registerer bruker først.");
-            }
+            Console.WriteLine("Bruker eksisterer ikke.");
+            return;
+        }
+
+        if (!bruker.UtlånteMedier.Any())
+        {
+            Console.WriteLine("Du har ingen aktive lån.");
+            return;
+        }
+        
+
+        foreach (var media in bruker.UtlånteMedier)
+        {
+            Console.WriteLine($"{media.MediaID} - {media.Tittel}");
         }
     }
+
 }
