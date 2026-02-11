@@ -11,7 +11,8 @@ public abstract class Media
     private static int mediaTeller = 0;
    
     // PRIVATE FELTER
-    public string MediaID { get; }
+    private readonly string mediaID;
+    public string MediaID { get => mediaID; }
 
     private string tittel;
     private int publiseringsÅr;
@@ -62,7 +63,7 @@ public abstract class Media
         protected Media(string Tittel, int PubliseringsÅr, int LånePeriodeDager){
             
         mediaTeller++;
-        MediaID = "M" + mediaTeller.ToString("D3");
+        mediaID = "M" + mediaTeller.ToString("D3");
         this.Tittel = Tittel;
         this.PubliseringsÅr = PubliseringsÅr;
         this.LånePeriodeDager = LånePeriodeDager;

@@ -21,11 +21,17 @@ public class Lydbok : Media
     public TimeSpan Varighet
     {
         get => varighet;
-        protected set => varighet = value;
+        protected set
+        {
+            if (value.TotalMinutes <= 0)
+                throw new ArgumentException("Varighet må være større enn 0.");
+            varighet = value;
+        }
+        
     }
     
     //KONSTRUKTØR
-    public Lydbok(string Tittel, int PubliseringsÅr, string Forfatter, int AntallSider)
+    public Lydbok(string Tittel,string Forfatter, int PubliseringsÅr, TimeSpan Varighet)
         : base(Tittel, PubliseringsÅr, 7)
     {
         this.Forfatter = Forfatter;

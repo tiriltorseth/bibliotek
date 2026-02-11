@@ -27,7 +27,7 @@ public class Tidsskrift : Media
         }
     }
 
-    public Tidsskrift(string Tittel, int PubliseringsÅr, int UtgaveNummer, string Måned)
+    public Tidsskrift(string Tittel, int UtgaveNummer, string Måned, int PubliseringsÅr)
         : base(Tittel, PubliseringsÅr, 3)
     {
         this.UtgaveNummer = UtgaveNummer;

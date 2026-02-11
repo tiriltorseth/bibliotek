@@ -30,7 +30,7 @@ public class Bok : Media
     }
     
     // KONSTRUKTØR 
-    public Bok(string Tittel, int PubliseringsÅr, string Forfatter, int AntallSider)
+    public Bok(string Tittel, string Forfatter, int PubliseringsÅr, int AntallSider)
         : base(Tittel, PubliseringsÅr, 14)
     {
         this.Forfatter = Forfatter;

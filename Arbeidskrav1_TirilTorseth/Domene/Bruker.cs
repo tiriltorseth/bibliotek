@@ -10,7 +10,9 @@ public abstract class Bruker
     private static int brukerTeller = 0;
 
     // BrukerID, public
-    public string BrukerID { get; }
+    private readonly string brukerID;
+    public string BrukerID { get => brukerID; }
+    
     
     //Private felter
     private string navn;
@@ -44,7 +46,7 @@ public abstract class Bruker
     protected Bruker(string navn, string epost)
     {
         brukerTeller++;
-        BrukerID = "B" + brukerTeller.ToString("D3");
+        brukerID = "B" + brukerTeller.ToString("D3");
         Navn = navn;
         Epost = epost;
         UtlånteMedier = new List<Media>();
