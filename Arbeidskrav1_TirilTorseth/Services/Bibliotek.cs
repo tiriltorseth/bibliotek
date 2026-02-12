@@ -10,20 +10,26 @@ public class Bibliotek
     public List<Bruker> BrukerRegister = new List<Bruker>(); 
     public List<Utlån> UtlånsHistorikk = new List<Utlån>();
 
-    public void LeggTilMedia(Media media, Bruker bruker)
+    public bool LeggTilMedia(Media media, Bruker bruker)
     {   
-        if (bruker is Ansatt)
+        if (bruker is not Ansatt)
         {
-            MediaRegister.Add(media);
+            return false;
         }
+        
+        MediaRegister.Add(media);
+        return true;
     }
 
-    public void RegistrerBruker(Bruker bruker)
+    public Bruker RegistrerBruker(Bruker bruker)
     {
-        BrukerRegister.Add(bruker); // hva skjer hvis den allerede eksisterer???
+        BrukerRegister.Add(bruker);
+        return bruker;
+
+        // hva skjer hvis den allerede eksisterer???
     }
 
-    public void LånMedia(string mediaID, string brukerID)
+    public Utlån? LånMedia(string mediaID, string brukerID)
     {
         var bruker = BrukerRegister
             .FirstOrDefault(b => b.BrukerID == brukerID);
@@ -31,13 +37,13 @@ public class Bibliotek
         if (bruker == null)
         {
             Console.WriteLine("Bruker eksisterer ikke.");
-            return;
+            return null;
         }
 
         if (!bruker.KanLåne())
         {
             Console.WriteLine("Bruker kan ikke låne flere medier.");
-            return;
+            return null;
         }
 
         var media = MediaRegister
@@ -46,13 +52,13 @@ public class Bibliotek
         if (media == null)
         {
             Console.WriteLine("Mediet eksisterer ikke.");
-            return;
+            return null;
         }
 
         if (media.ErUtlånt)
         {
             Console.WriteLine("Mediet er allerede utlånt.");
-            return;
+            return null;
         }
 
         media.ErUtlånt = true;
@@ -60,13 +66,13 @@ public class Bibliotek
         
         var utlån = new Utlån(media,bruker,DateTime.Now);
         UtlånsHistorikk.Add(utlån);
-
-        Console.WriteLine("Lånet er registrert!.");
+        
+        return utlån;
     }
     
     
 
-    public void LeverInnMedia(string MediaID, string BrukerID)
+    public Utlån? LeverInnMedia(string MediaID, string BrukerID)
     {
         var bruker = BrukerRegister
             .FirstOrDefault(b => b.BrukerID == BrukerID);
@@ -74,7 +80,7 @@ public class Bibliotek
         if (bruker == null)
         {
             Console.WriteLine("Bruker eksisterer ikke.");
-            return;
+            return null;
         }
 
         var media = MediaRegister
@@ -83,13 +89,13 @@ public class Bibliotek
         if (media == null)
         {
             Console.WriteLine("Mediet eksisterer ikke.");
-            return;
+            return null;
         }
 
         if (!media.ErUtlånt)
         {
             Console.WriteLine("Mediet er ikke utlånt.");
-            return;
+            return null;
         }
 
         var utlån = UtlånsHistorikk
@@ -101,7 +107,7 @@ public class Bibliotek
         if (utlån == null)
         {
             Console.WriteLine("Fant ikke aktivt lån.");
-            return;
+            return null;
         }
 
         media.ErUtlånt = false;
@@ -110,6 +116,8 @@ public class Bibliotek
 
         Console.WriteLine("Innlevering registrert.");
         Console.WriteLine($"{media.MediaID} - {media.Tittel}");
+
+        return utlån;
 
     }
 

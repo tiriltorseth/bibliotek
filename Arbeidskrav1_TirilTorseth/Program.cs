@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using Arbeidskrav1_TirilTorseth.Domene;
 using Arbeidskrav1_TirilTorseth.Services;
 
@@ -54,7 +55,7 @@ class Program
             Console.WriteLine(" 4. Vis mine utlån");                                 
             Console.WriteLine(" 5. Legg til nytt medie (kun ansatte)");              
             Console.WriteLine(" 6. Registrer ny bruker");                            
-            Console.WriteLine(" 0. Avslutt");                                        
+            Console.WriteLine(" 0. Avslutt\n");                                        
                                                                          
             Console.Write("Velg alternativ (0-6): ");                                
                                                                          
@@ -80,6 +81,7 @@ class Program
                     //VALG 1 - VIS ALLE MEDIER
                     case 1:
                     Console.WriteLine("\n=== Tilgjengelige medier ===\n");
+                   
                     foreach (var bok in bibliotek.MediaRegister.OfType<Bok>())
                     {
                         Console.WriteLine(
@@ -109,25 +111,46 @@ class Program
 
                     // VALG 2 - LÅN MEDIE
                     case 2:
-                    Console.Write("Skriv inn BrukerID (B###): ");
+                    Console.Write("\nSkriv inn BrukerID (B###): ");
                     string brukerID = Console.ReadLine();
 
                     Console.Write("Skriv inn MediaID (M###): ");
                     string mediaID = Console.ReadLine();
 
-                    bibliotek.LånMedia(mediaID, brukerID);
+                    var registert = bibliotek.LånMedia(mediaID, brukerID);
+
+                    if (registert == null)
+                    {
+                        Console.WriteLine("\nKunne ikke registrere lånet");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\n{registert.bruker.Navn} har lånt '{registert.media.Tittel}'\nForventet innlevering er: {registert.ForventetInnleveringsDato}");
+
+                    }
+
 
                     break;
                     
-           //FIKS         //VALG 3 - LEVER INN MEDIE
+                    //VALG 3 - LEVER INN MEDIE
                     case 3:
-                        Console.Write("Skriv inn BrukerID (B###): ");  
+                        Console.Write("\nSkriv inn BrukerID (B###): ");  
                         string LeverMedieBruker = Console.ReadLine();          
                                                
                         Console.Write("Skriv inn MediaID (M###): ");   
                         string LeverMedieMedia = Console.ReadLine();           
                                                
-                        bibliotek.LeverInnMedia(LeverMedieMedia, LeverMedieBruker);         
+                        var registrerLeverInn = bibliotek.LeverInnMedia(LeverMedieMedia, LeverMedieBruker);  
+                        
+                        if (registrerLeverInn == null)
+                        {
+                            Console.WriteLine("\nLånet er ikke registrert");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"\n{registrerLeverInn.bruker.Navn} har levert inn '{registrerLeverInn.media.Tittel}'\n");
+
+                        }
                         
                         break;
                     
@@ -145,28 +168,185 @@ class Program
                     
                     //Legg til nytt medie
                     case 5:
+                        Console.Write("Skriv inn din BrukerID (B###):");
+                        string sjekkAnsatt = Console.ReadLine();
+                        
+                        var bruker = bibliotek.BrukerRegister
+                            .FirstOrDefault(b => b.BrukerID == sjekkAnsatt);
 
+                        if (bruker == null)
+                        {
+                            Console.WriteLine("Bruker finnes ikke.");
+                            break;
+                        }
+
+                        if (!(bruker is Ansatt))
+                        {
+                            Console.WriteLine("Kun ansatte kan registrere nye medier");
+                            break;
+
+                        }
+
+                        Console.Write("\n1. Bok" +
+                                      "\n2. Lydbok" +
+                                      "\n3. Ebok" +
+                                      "\n4. Tidskrift" +
+                                      "\nVelg medietype du skal registrere:");
+                            string TypeMedie = Console.ReadLine();
+
+                            switch (TypeMedie)
+                            {
+                                case "1":
+                                    Console.Write("Tittel: ");
+                                    string Tittel = Console.ReadLine();
+
+                                    Console.Write("Forfatter: ");
+                                    string Forfatter = Console.ReadLine();
+
+                                    Console.Write("Publiseringsår: ");
+                                    string Publiseringsår = Console.ReadLine();
+                                    int PubliseringsÅr = int.Parse(Publiseringsår);
+
+                                    Console.Write("Antall sider: ");
+                                    string AntallSid = Console.ReadLine();
+                                    int AntallSider = int.Parse(AntallSid);
+
+                                    var NyBok = new Bok(Tittel, Forfatter, PubliseringsÅr, AntallSider);
+
+                                    bool RegBok = bibliotek.LeggTilMedia(NyBok, bruker);
+
+                                    if (RegBok)
+                                    {
+                                        Console.WriteLine($"[{bruker.BrukerID}] har lagt til en ny bok: '{NyBok.Tittel}' ");
+                                    }
+
+                                    break;
+
+                                case "2":
+                                    Console.Write("Tittel: ");
+                                    string Tittel2 = Console.ReadLine();
+
+                                    Console.Write("Forfatter: ");
+                                    string Forfatter2 = Console.ReadLine();
+
+                                    Console.Write("Publiseringsår: ");
+                                    string Publiseringsår2 = Console.ReadLine();
+                                    int PubliseringsÅr2 = int.Parse(Publiseringsår2);
+
+                                    Console.Write("Varighet (: ");
+                                    int Varighe = int.Parse(Console.ReadLine());
+                                    TimeSpan Varighet = new TimeSpan(Varighe, 0, 0);
+
+                                    var NyLydbok = new Lydbok(Tittel2, Forfatter2, PubliseringsÅr2, Varighet);
+
+                                    bool RegLydbok = bibliotek.LeggTilMedia(NyLydbok, bruker);
+
+                                    if (RegLydbok)
+                                    {
+                                        Console.WriteLine($"[{bruker.BrukerID}] har lagt til en ny ebok: '{NyLydbok.Tittel}' ");
+                                    }
+
+                                    break;
+
+                                case "3":
+                                    Console.Write("Tittel: ");
+                                    string Tittel3 = Console.ReadLine();
+
+                                    Console.Write("Forfatter: ");
+                                    string Forfatter3 = Console.ReadLine();
+
+                                    Console.Write("Publiseringsår: ");
+                                    string Publiseringsår3 = Console.ReadLine();
+                                    int PubliseringsÅr3 = int.Parse(Publiseringsår3);
+
+                                    Console.Write("Varighet (: ");
+                                    string MegaBite = Console.ReadLine();
+                                    int MB = int.Parse(MegaBite);
+
+                                    var NyEbok = new Ebok(Tittel3, Forfatter3, PubliseringsÅr3, MB);
+
+                                    bool RegEbok = bibliotek.LeggTilMedia(NyEbok, bruker);
+
+                                    if (RegEbok)
+                                    {
+                                        Console.WriteLine($"[{bruker.BrukerID}] har lagt til en ny ebok: '{NyEbok.Tittel}' ");
+                                    }
+
+                                    break;
+
+                                case "4":
+                                    Console.Write("Tittel: ");
+                                    string Tittel4 = Console.ReadLine();
+
+                                    Console.Write("Utgavenummer: ");
+                                    string UtgaveNummer = Console.ReadLine();
+                                    int UtgaveNmr = int.Parse(UtgaveNummer);
+
+                                    Console.Write("Måned: ");
+                                    string Måned = Console.ReadLine();
+
+                                    Console.Write("Publiseringsår: ");
+                                    string Publiseringsår4 = Console.ReadLine();
+                                    int PubliseringsÅr4 = int.Parse(Publiseringsår4);
+
+                                    var NyTidsskrift = new Tidsskrift(Tittel4, UtgaveNmr, Måned, PubliseringsÅr4);
+
+                                    bool RegTidsskrift = bibliotek.LeggTilMedia(NyTidsskrift, bruker);
+
+                                    if (RegTidsskrift)
+                                    {
+                                        Console.WriteLine(
+                                            $"[{bruker.BrukerID}] har lagt til en ny bok: '{NyTidsskrift.Tittel}' ");
+                                    }
+
+                                    break;
+                        }
                         break;
+                    
+                    
                     
                     // Registrer ny bruker
                     case 6:
-                        Console.Write("Skriv inn Medlem eller Ansatt med små bokstaver: ");
-                        
-                        Console.Write("Skriv inn Navn: ");
-                        string RegistrerNavn = Console.ReadLine();
-                        
-                        Console.Write("Skriv inn Epost: ");
+                        Console.Write("\nRegistrer medlem (1) eller ansatt (2): ");
+                        string VelgType = Console.ReadLine();
 
+                        if (VelgType == "1")
+                        {
+                            Console.Write("\nSkriv inn Navn: ");
+                            string RegistrerNavnMedlem = Console.ReadLine();
+                            
+                            Console.Write("Skriv inn Epost: ");
+                            string RegistrerEpostMedlem = Console.ReadLine();
+                            
+                            var NyttMedlem = new Medlem(RegistrerNavnMedlem, RegistrerEpostMedlem);
+                            
+                            var registrert = bibliotek.RegistrerBruker(NyttMedlem);
 
+                            Console.WriteLine($"\nNytt medlem lagt til: [{registrert.BrukerID}] [{registrert.Navn}] [{registrert.Epost}]");
+                        }
+                            
+                        if (VelgType == "2") 
+                        {
+                            Console.Write("\nSkriv inn Navn: ");
+                            string RegistrerNavnAnsatt = Console.ReadLine();
+                        
+                            Console.Write("Skriv inn Epost: ");
+                            string RegistrerEpostAnsatt = Console.ReadLine();
+                        
+                            var NyAnsatt = new Ansatt(RegistrerNavnAnsatt, RegistrerEpostAnsatt);
+                        
+                           var registrert = bibliotek.RegistrerBruker(NyAnsatt);
+                            
+                            Console.WriteLine($"\nNy ansatt lagt til: [{registrert.BrukerID}] [{registrert.Navn}] [{registrert.Epost}]");
+                        }
+                        
                         break;
                     
                     
                     // VALG 0 - AVSLUTT PROGRAM
                     case 0:
-                        Console.WriteLine("Program avsluttet. Hadet!");  
+                        Console.WriteLine("\nProgram avsluttet. Hadet!");  
                         return;
-                    
-                    
                     
             }
         }
