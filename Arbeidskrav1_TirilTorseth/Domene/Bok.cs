@@ -1,12 +1,17 @@
 using System;
 namespace Arbeidskrav1_TirilTorseth.Domene;
 
+/// <summary>
+/// Abstrakt klasse for mediet bok, arver fra Media
+/// </summary>
 public class Bok : Media
 {
     private string forfatter;
     private int antallSider;
 
-
+    /// <summary>
+    /// Forfatter på bok i en string
+    /// </summary>
     public string Forfatter
     {
         get => forfatter;
@@ -22,7 +27,10 @@ public class Bok : Media
             forfatter = value;
         }
     }
-
+    
+    /// <summary>
+    /// Antall sider per bok som int
+    /// </summary>
     public int AntallSider
     {
         get => antallSider;
@@ -34,7 +42,11 @@ public class Bok : Media
         }
     }
     
-    // KONSTRUKTØR 
+    /// <summary>
+    /// Oppretter ny bok med Tittel, Forfatter, Publiseringsår, antall sider og Låneperiode
+    /// Tittel Publiseringsår og Låneperiodedager arves fra Media klassen
+    /// Låneperioden er satt til 14 dager for bok 
+    /// </summary>
     public Bok(string Tittel, string Forfatter, int PubliseringsÅr, int AntallSider)
         : base(Tittel, PubliseringsÅr, 14)
     {
@@ -42,6 +54,10 @@ public class Bok : Media
         this.AntallSider = AntallSider;
     }
 
+    /// <summary>
+    /// Metode som ikke returnerer noe og overrider VisInfo() fra Media
+    /// Skriver ut informasjon om boken som blir opprettet
+    /// </summary>
     public override void VisInfo()
     {
         Console.WriteLine(

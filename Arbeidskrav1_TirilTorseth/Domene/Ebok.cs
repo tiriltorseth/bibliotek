@@ -2,11 +2,17 @@ using System.Data;
 
 namespace Arbeidskrav1_TirilTorseth.Domene;
 
+/// <summary>
+/// Abstrakt klasse for mediet ebok, arver fra Media
+/// </summary>
 public class Ebok : Media
 {
     private string forfatter;
     private double filStørrelse;
     
+    /// <summary>
+    /// Forfatter på bok i en string
+    /// </summary>
     public string Forfatter
     {
         get => forfatter;
@@ -22,7 +28,10 @@ public class Ebok : Media
             forfatter = value;
         }
     }
-
+    
+    /// <summary>
+    /// Filstørrelse på eboken som en double
+    /// </summary>
     public double FilStørrelse
     {
         get => filStørrelse;
@@ -34,7 +43,11 @@ public class Ebok : Media
         }
     }
     
-    //KONSTRUKTØR
+    /// <summary>
+    /// Oppretter ny ebok med Tittel, Forfatter, Publiseringsår, filstørrelse og Låneperiode
+    /// Tittel Publiseringsår og Låneperiodedager arves fra Media klassen
+    /// Låneperioden er satt til 21 dager for ebok 
+    /// </summary>
     public Ebok(string Tittel,string Forfatter, int PubliseringsÅr,  double FilStørrelse)
         : base(Tittel, PubliseringsÅr, 21)
     {
@@ -43,6 +56,10 @@ public class Ebok : Media
 
     }
     
+    /// <summary>
+    /// Metode som ikke returnerer noe og overrider VisInfo() fra Media
+    /// Skriver ut informasjon om eboken som blir opprettet
+    /// </summary>
     public override void VisInfo()
     {
         Console.WriteLine(

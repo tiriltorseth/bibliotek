@@ -2,11 +2,17 @@ using System.Runtime.CompilerServices;
 
 namespace Arbeidskrav1_TirilTorseth.Domene;
 
+/// <summary>
+/// Abstrakt klasse for mediet lydbok, arver fra Media
+/// </summary>
 public class Lydbok : Media
 {
     private string forfatter;
     private TimeSpan varighet;
 
+    /// <summary>
+    /// Forfatter på lydbok i en string
+    /// </summary>
     public string Forfatter
     {
         get => forfatter;
@@ -23,6 +29,9 @@ public class Lydbok : Media
         }
     }
     
+    /// <summary>
+    /// Varighet på lydbok i en Timespan
+    /// </summary>
     public TimeSpan Varighet
     {
         get => varighet;
@@ -35,7 +44,11 @@ public class Lydbok : Media
         
     }
     
-    //KONSTRUKTØR
+    /// <summary>
+    /// Oppretter ny lydbok med Tittel, Forfatter, Publiseringsår, varighet og Låneperiode
+    /// Tittel Publiseringsår og Låneperiodedager arves fra Media klassen
+    /// Låneperioden er satt til 7 dager for bok 
+    /// </summary>
     public Lydbok(string Tittel,string Forfatter, int PubliseringsÅr, TimeSpan Varighet)
         : base(Tittel, PubliseringsÅr, 7)
     {
@@ -43,6 +56,10 @@ public class Lydbok : Media
         this.Varighet = Varighet;
     }
 
+    /// <summary>
+    /// Metode som ikke returnerer noe og overrider VisInfo() fra Media
+    /// Skriver ut informasjon om lydboken som blir opprettet
+    /// </summary>
     public override void VisInfo()
     {
         Console.WriteLine(

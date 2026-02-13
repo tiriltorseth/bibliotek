@@ -4,21 +4,25 @@ namespace Arbeidskrav1_TirilTorseth.Domene;
 /// <summary>
 /// Abstrakt baseklasse for alle brukere
 /// </summary>
-
 public abstract class Bruker
 {
-    // Statisk id generator
-    private static int brukerTeller = 0;
 
-    // BrukerID, public
+    private static int brukerTeller = 0;
     private readonly string brukerID;
+    
+    /// <summary>
+    /// BrukerID i en string
+    /// Genereres automatisk og er unik for hver bruker
+    /// </summary>
     public string BrukerID { get => brukerID; }
     
     
-    //Private felter
     private string navn;
     private string epost;
 
+    /// <summary>
+    /// Navn på alle brukere
+    /// </summary>
     public string Navn
     {
         get => navn;
@@ -32,11 +36,13 @@ public abstract class Bruker
                 throw new ArgumentException("Navnet må være mer enn to bokstaver");
             }
             
-            
             navn = value;
         }
     }
 
+    /// <summary>
+    /// Epost til alle brukere
+    /// </summary>
     public string Epost
     {
         get => epost;
@@ -56,9 +62,16 @@ public abstract class Bruker
         }
     }
 
+    /// <summary>
+    /// Oppretter liste for alle utlånte medier
+    /// </summary>
     public List<Media> UtlånteMedier { get; }
     
-    //KONSTRUKTØR
+    
+    /// <summary>
+    /// Oppretter bruker med navn, epost og unik ID
+    /// Lager UtlånteMedier til nytt objekt
+    /// </summary>
     protected Bruker(string navn, string epost)
     {
         brukerTeller++;
@@ -68,7 +81,9 @@ public abstract class Bruker
         UtlånteMedier = new List<Media>();
     }
     
-    // Abstrakt metode
+    /// <summary>
+    /// Abstrakt metode som bestemmer hvem som kan låne
+    /// </summary>
     public abstract bool KanLåne();
 }
 

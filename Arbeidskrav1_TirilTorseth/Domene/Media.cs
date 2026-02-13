@@ -3,15 +3,14 @@ using System;
 namespace Arbeidskrav1_TirilTorseth.Domene;
 
 /// <summary>
-/// Abstrakt baseklasse for all media
+/// Abstrakt baseklasse for alle medier
 /// </summary>
 public abstract class Media
 {
-    // STATIC ID-GENERATOR
     private static int mediaTeller = 0;
-   
-    // PRIVATE FELTER
     private readonly string mediaID;
+    
+    //Unik og autogenerert ID for all media
     public string MediaID { get => mediaID; }
 
     private string tittel;
@@ -19,7 +18,9 @@ public abstract class Media
     private bool erUtlånt;
     private int lånePeriodeDager;
     
-
+    /// <summary>
+    /// Tittel på mediet.
+    /// </summary>
     public string Tittel
     {
         get => tittel;
@@ -31,6 +32,9 @@ public abstract class Media
         }
     }
 
+    /// <summary>
+    /// Publiseringsår for alle medier
+    /// </summary>
     public int PubliseringsÅr
     {
         get => publiseringsÅr;
@@ -45,21 +49,28 @@ public abstract class Media
         }
     }
 
+    /// <summary>
+    /// Bool som setter om mediet er utlånt eller ikke
+    /// </summary>
     public bool ErUtlånt
     {
         get => erUtlånt;
         set => erUtlånt = value;
     }
 
+    /// <summary>
+    /// Låneperiode for alle medier, settes senere i hvert medie
+    /// </summary>
     public int LånePeriodeDager
     {
         get => lånePeriodeDager;
         protected set => lånePeriodeDager = value;
 
     }
-
-    //KONSTRUKTØR
-        
+    
+    /// <summary>
+    /// Oppretter nytt Media med MediaID, Tittel, Publiseringsår og Låneperiodedager
+    /// </summary>
         protected Media(string Tittel, int PubliseringsÅr, int LånePeriodeDager){
             
         mediaTeller++;
@@ -69,7 +80,9 @@ public abstract class Media
         this.LånePeriodeDager = LånePeriodeDager;
         ErUtlånt = false;
     }
-    // ABSTRAKT METODE
+    /// <summary>
+    /// Abstrakt metode for å vise info for hvert medie etterhvert som de blir laget
+    /// </summary>
     public abstract void VisInfo();
 }
 

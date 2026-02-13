@@ -10,9 +10,19 @@ public class Utlån
     private static int utlånTeller = 0;
     
     private readonly string utlånsID; 
+    
+    /// <summary>
+    ///  String som oppretter UtlånsID og henter utlåndsID fra privat property
+    /// </summary>
     public string UtlånsID { get=> utlånsID; }
     
+    /// <summary>
+    ///  Media objekt som tar inn media
+    /// </summary>
     public Media media { get; }
+    /// <summary>
+    ///  Bruker objekt som tar inn bruker
+    /// </summary>
     public Bruker bruker { get; }
     
     private DateTime utlånsDato;
@@ -20,6 +30,9 @@ public class Utlån
     private DateTime? innlevertDato;
         
 
+    /// <summary>
+    ///  Utlånsdate som en DateTime for å lagre datoen mediet ble utlånt
+    /// </summary>
     public DateTime UtlånsDato
     {
         get => utlånsDato;
@@ -32,6 +45,9 @@ public class Utlån
         
     }
     
+    /// <summary>
+    ///  Forventet innlevering som en DateTime for å lagre når mediet skal leveres inn
+    /// </summary>
     public DateTime ForventetInnleveringsDato
     {
         get => forventetInnleveringsDato;
@@ -41,7 +57,10 @@ public class Utlån
         }
     }
 
-    
+    /// <summary>
+    /// Nullable Innlevert dato for å registrere når mediet faktisk ble levert
+    /// 
+    /// </summary>
     public DateTime? InnlevertDato
     {
         get => innlevertDato;
@@ -58,6 +77,10 @@ public class Utlån
         
     }
 
+    /// <summary>
+    /// Oppretter utlån og tar inn Media objekt med variabel, Bruker objekt med variabel og utlånsdato
+    /// Setter UtlånsID per utlån
+    /// </summary>
     public Utlån(Media media, Bruker bruker, DateTime utlånsDato)
     {
         utlånTeller++;
@@ -70,6 +93,9 @@ public class Utlån
         
     }
 
+    /// <summary>
+    ///  Boolsk metode som returnerer true dersom mediet ikke er levert til forventet dato
+    /// </summary>
     public bool ErForsinket()
     {
         if (InnlevertDato > ForventetInnleveringsDato)

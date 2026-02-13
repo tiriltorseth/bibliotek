@@ -6,8 +6,17 @@ using Arbeidskrav1_TirilTorseth.Services;
 
 namespace Arbeidskrav1_TirilTorseth;
 
+/// <summary>
+/// Klasse for progammet som skal kjøres
+/// </summary>
 class Program
 {
+    /// <summary>
+    /// Main metode: Her foregår kjøringen av alle bibloteksfilene
+    /// Oppretter først objekter og legger inn data i systemet
+    /// Inneholder meny og brukerinteraksjon
+    /// Bruker switch for å kjøre de ulike valgene
+    /// </summary>
     static void Main(string[] args)
     {
         //Lager bibliotek og legger inn data og objekter 
