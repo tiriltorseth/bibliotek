@@ -80,32 +80,11 @@ class Program
             {
                     //VALG 1 - VIS ALLE MEDIER
                     case 1:
+                        
                     Console.WriteLine("\n=== Tilgjengelige medier ===\n");
-                   
-                    foreach (var bok in bibliotek.MediaRegister.OfType<Bok>())
-                    {
-                        Console.WriteLine(
-                            $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}), {bok.AntallSider} sider");
-                    }
-
-                    foreach (var bok in bibliotek.MediaRegister.OfType<Lydbok>())
-                    {
-                        Console.WriteLine(
-                            $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}) - {bok.Varighet}");
-                    }
-
-                    foreach (var bok in bibliotek.MediaRegister.OfType<Ebok>())
-                    {
-                        Console.WriteLine(
-                            $"[{bok.MediaID}] - '{bok.Tittel}' av {bok.Forfatter} ({bok.PubliseringsÅr}), {bok.FilStørrelse} MB");
-                    }
-
-                    foreach (var bok in bibliotek.MediaRegister.OfType<Tidsskrift>())
-                    {
-                        Console.WriteLine(
-                            $"[{bok.MediaID}] - '{bok.Tittel}' - Utgave nr. {bok.UtgaveNummer}, {bok.Måned}  {bok.PubliseringsÅr}");
-
-                    }
+                    
+                    bibliotek.VisTilgjengeligeMedier();    
+                    
 
                     break;
 

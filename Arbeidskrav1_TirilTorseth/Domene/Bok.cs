@@ -44,6 +44,7 @@ public class Bok : Media
 
     public override void VisInfo()
     {
-        Console.WriteLine($"Bok: {Tittel} av {Forfatter}");
+        Console.WriteLine(
+            $"[{MediaID}] - '{Tittel}' av {Forfatter} ({PubliseringsÅr}), {AntallSider} sider");
     }
 }

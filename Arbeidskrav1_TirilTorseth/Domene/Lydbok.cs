@@ -45,8 +45,10 @@ public class Lydbok : Media
 
     public override void VisInfo()
     {
-        Console.WriteLine($"Lydbok: {Tittel} av {Forfatter}");
+        Console.WriteLine(
+            $"[{MediaID}] - '{Tittel}' av {Forfatter} ({PubliseringsÅr}) - {Varighet}");
     }
+    
 }
 
 

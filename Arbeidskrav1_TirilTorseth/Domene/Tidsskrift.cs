@@ -46,6 +46,7 @@ public class Tidsskrift : Media
     
     public override void VisInfo()
     {
-        Console.WriteLine($"Tidsskrift: {Tittel} med utgavenummer {UtgaveNummer}");
+        Console.WriteLine(
+            $"[{MediaID}] - '{Tittel}' - Utgave nr. {UtgaveNummer}, {Måned}  {PubliseringsÅr}");
     }
 }

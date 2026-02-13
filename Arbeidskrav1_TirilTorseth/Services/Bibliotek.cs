@@ -127,8 +127,21 @@ public class Bibliotek
 
     public void VisTilgjengeligeMedier()
     {
-        Console.WriteLine(MediaRegister);
+        
+        foreach (var media in MediaRegister)
+        {
+            if (media.ErUtlånt)
+            {
+                continue;
+            }
+            else
+            { 
+                media.VisInfo();
+            }
+        }
     }
+        
+    
 
     public void VisMineUtlån(string brukerID)
     {

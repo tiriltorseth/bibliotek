@@ -45,7 +45,8 @@ public class Ebok : Media
     
     public override void VisInfo()
     {
-        Console.WriteLine($"Ebok: {Tittel} av {Forfatter}");
+        Console.WriteLine(
+            $"[{MediaID}] - '{Tittel}' av {Forfatter} ({PubliseringsÅr}), {FilStørrelse} MB");
     }
     
     
