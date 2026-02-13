@@ -26,7 +26,7 @@ public abstract class Media
         protected set
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Navn kan ikke stå tomt.");
+                throw new ArgumentException("Tittel kan ikke stå tomt.");
             tittel = value;
         }
     }
@@ -37,7 +37,7 @@ public abstract class Media
         protected set
         {
             
-            if (value < 1400 || value > 2026)
+            if (value < 1700 || value > 2026)
                 throw new ArgumentException("Årstallet er ugyldig.");
 
             

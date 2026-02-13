@@ -23,6 +23,16 @@ public class Tidsskrift : Media
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Måned kan ikke stå tom.");
+
+            string[] GyldigeMåneder =
+                
+                { "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September",
+                    "Oktober","November","Desember" };
+
+        if (!(GyldigeMåneder.Contains(value)))
+        {
+        Console.WriteLine("Måneden er ugyldig.");
+    }
             måned = value;
         }
     }

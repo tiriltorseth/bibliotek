@@ -23,10 +23,14 @@ public class Bibliotek
 
     public Bruker RegistrerBruker(Bruker bruker)
     {
+        if (BrukerRegister.Any(b => b.Epost == bruker.Epost))
+        {
+            return null;
+        }
+
         BrukerRegister.Add(bruker);
         return bruker;
 
-        // hva skjer hvis den allerede eksisterer???
     }
 
     public Utlån? LånMedia(string mediaID, string brukerID)

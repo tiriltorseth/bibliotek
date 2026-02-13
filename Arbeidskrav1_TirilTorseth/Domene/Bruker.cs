@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 namespace Arbeidskrav1_TirilTorseth.Domene;
 
 /// <summary>
@@ -25,6 +26,13 @@ public abstract class Bruker
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Navnet kan ikke stå tomt.");
+            
+            if (value.Length < 2)
+            {
+                throw new ArgumentException("Navnet må være mer enn to bokstaver");
+            }
+            
+            
             navn = value;
         }
     }
@@ -36,6 +44,14 @@ public abstract class Bruker
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Epost kan ikke stå tomt.");
+            
+            string epostSjekk = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
+
+            if (!(Regex.IsMatch(value, epostSjekk) || value.Contains(".")))
+            {
+                Console.WriteLine("Ugyldig epost");
+            }
+                
             epost = value;
         }
     }
@@ -46,7 +62,7 @@ public abstract class Bruker
     protected Bruker(string navn, string epost)
     {
         brukerTeller++;
-        brukerID = "B" + brukerTeller.ToString("D3");
+        brukerID = $"B{brukerTeller:D3}"; ;
         Navn = navn;
         Epost = epost;
         UtlånteMedier = new List<Media>();
@@ -55,3 +71,5 @@ public abstract class Bruker
     // Abstrakt metode
     public abstract bool KanLåne();
 }
+
+

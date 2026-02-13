@@ -14,6 +14,11 @@ public class Bok : Media
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Forfatter kan ikke stå tomt.");
+            
+            if (value.Length < 2)
+            {
+                throw new ArgumentException("Navnet må være mer enn to bokstaver");
+            }
             forfatter = value;
         }
     }
@@ -24,7 +29,7 @@ public class Bok : Media
         protected set
         {
             if (value < 1 || value > 5000)
-                throw new ArgumentException("Korriger sidetall.");
+                throw new ArgumentException("Sidetall kan ikke være null eller mer enn 5000 sider.");
             antallSider = value;
         }
     }

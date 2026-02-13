@@ -14,6 +14,11 @@ public class Lydbok : Media
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Forfatter kan ikke stå tomt.");
+            
+            if (value.Length < 2)
+            {
+                throw new ArgumentException("Navnet må være mer enn to bokstaver");
+            }
             forfatter = value;
         }
     }
@@ -23,8 +28,8 @@ public class Lydbok : Media
         get => varighet;
         protected set
         {
-            if (value.TotalMinutes <= 0)
-                throw new ArgumentException("Varighet må være større enn 0.");
+            if (value.TotalMinutes <= 0 || value.TotalHours > 100)
+                throw new ArgumentException("Varighet må være større enn 0 minutter og mindre enn 100 timer");
             varighet = value;
         }
         

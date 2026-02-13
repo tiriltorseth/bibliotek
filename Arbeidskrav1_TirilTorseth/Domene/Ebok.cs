@@ -14,6 +14,11 @@ public class Ebok : Media
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Forfatter kan ikke stå tomt.");
+            
+            if (value.Length < 2)
+            {
+                throw new ArgumentException("Navnet må være mer enn to bokstaver");
+            }
             forfatter = value;
         }
     }
@@ -23,8 +28,8 @@ public class Ebok : Media
         get => filStørrelse;
         protected set
         {
-            if (value <= 0)
-                throw new ArgumentException("Filstørrelsen må være større enn 0.");
+            if (value <= 0 || value > 50)
+                throw new ArgumentException("Filstørrelsen må være større enn 0 MB og mindre enn 50 MB .");
             filStørrelse = value;
         }
     }
